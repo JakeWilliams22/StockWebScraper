@@ -6,23 +6,24 @@ quandl.ApiConfig.api_key="DfbkPnn4g-T4sjzWXKtf" #This is a free key, it is not c
 
 src="stockList.csv"
 dest="historic_info.csv"
-start_date = datetime.date(2017,1,1)
+start_date = datetime.date(2017,5,26)
+# start_date = datetime.date(2017,1,1)
 end_date = datetime.date.today();
 
 stockList = []
 notFoundSymbols = []
 
-def writeColumnHeaders(data, writer):
-  writer.writerow(data.meta['column_names'])
+def writeColumnHeaders(ticker, data, writer):
+  writer.writerow([ticker] + data.meta['column_names'])
   
 hasRun = False
-def writeToFile(data, writer):
+def writeToFile(ticker, data, writer):
   global hasRun;
   if not hasRun:
-    writeColumnHeaders(data, writer);
+    writeColumnHeaders(ticker, data, writer);
     hasRun = True
   for row in data.values:
-    writer.writerow(row._raw_data);
+    writer.writerow([ticker] + row._raw_data);
 
 def readFromStockList():
   with open(src, 'rb') as csvfile:
@@ -36,7 +37,7 @@ def getStockData(stockList):
       quandlSrc = "WIKI/" + ticker.upper().strip();
       try:
         data = quandl.Dataset(quandlSrc).data(params={'start_date': start_date,'end_date': end_date})
-        writeToFile(data, writer);
+        writeToFile(ticker, data, writer);
       except quandl.errors.quandl_error.NotFoundError:
         notFoundSymbols.append(ticker);
 
