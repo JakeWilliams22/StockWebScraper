@@ -6,7 +6,7 @@ quandl.ApiConfig.api_key="DfbkPnn4g-T4sjzWXKtf" #This is a free key, it is not c
 
 src="stockList.csv"
 dest="historic_info.csv"
-start_date = datetime.date(2017,01,01)
+start_date = datetime.date(2017,1,1)
 end_date = datetime.date.today();
 
 stockList = []
@@ -43,5 +43,5 @@ def getStockData(stockList):
 
 stockList = readFromStockList()
 getStockData(stockList)
-print "symbols not on quandl: " + str(notFoundSymbols)
+print ("symbols not on quandl: " + str(notFoundSymbols))
 
